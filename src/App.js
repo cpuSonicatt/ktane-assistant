@@ -1,25 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import FuzzySet from "fuzzyset.js";
+import { Component } from "react";
+import Speaker from "./helpers/Speaker"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const recog = new SpeechRecognition();
+const a = FuzzySet(["defuse wires", "solve wires", "bomb check"])
+const s = new Speaker()
+
+
+class App extends Component {
+
+    constructor() {
+        super()
+        this.state = {
+            openMic: false
+        }
+    }
+
+    componentDidMount() {        
+        recog.continuous = true;
+        recog.lang = "en-GB";
+        recog.interimResults = false;
+        recog.maxAlternatives = 1;
+
+        recog.onresult = function(event) {
+            switch (a.get(event.results[event.results.length - 1][0].transcript)[0][1]) {
+                case "defuse wires":
+                case "solve wires":
+                    h.solveWires()
+                case "bomb check":
+                    h.bombCheck()
+            }
+            
+        }
+
+    }
+
+    handleOnClick = () => {
+        if (!this.state.openMic) {
+            recog.start()
+            this.setState({
+                openMic: true
+            })
+            s.say("Let's go")
+        } else {
+            recog.stop()
+            this.setState({
+                openMic: false
+            })
+        }
+    }
+
+    
+
+    render() {
+        return(
+            <div>
+                <p>fuck you</p>
+                <button onClick={() => this.handleOnClick()}>{this.state.openMic ? "ON" : "OFF"}</button>
+            </div>
+        )
+    }
 }
 
 export default App;
