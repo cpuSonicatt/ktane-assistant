@@ -1,6 +1,9 @@
 import annyang from "annyang";
 import Bomb from "ktane-solver/bomb"
 import Speaker from "../speaker/Speaker";
+import { solveButton } from "./ButtonHelper";
+import { solveMaze } from "./MazeHelper";
+import { solveKeypad } from "./SymbolsHelper";
 import { solveWires } from "./WiresHelper";
 
 let bomb;
@@ -8,7 +11,7 @@ let digit, vowel, car, frk, parallel, batteries
 
 const mainCommands = {
     "bomb check": getBomb,
-    "solve :module": {"regexp": /solve (wires|button|complicated)/, "callback": chooseModule}
+    "solve :module": {"regexp": /solve (wires|button|keypad|maze)/, "callback": chooseModule}
 }
 
 const bombCheckCommands = {
@@ -22,7 +25,6 @@ const bombCheckCommands = {
 }
 
 export function main() {
-    console.log("test")
     annyang.debug(true) // remove me
     annyang.addCommands(mainCommands)
     
@@ -93,8 +95,18 @@ function addBatteries(num) {
 
 function chooseModule(module) {
     annyang.abort()
-    switch (module) {
+    switch (module.toLowerCase()) {
         case "wires":
             solveWires(bomb)
+            break
+        case "button":
+            solveButton(bomb)
+            break
+        case "keypad":
+            solveKeypad()
+            break
+        case "maze":
+            solveMaze()
+            break
     }
 }

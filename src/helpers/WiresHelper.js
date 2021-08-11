@@ -6,8 +6,9 @@ import { main } from "./MainHelper";
 
 let bomb;
 
-const wireCommands = {
-    "*wires": getSolution
+const wireCommands = { // disgusting
+    "wires": {"regexp": /(red|blue|yellow|black|white) ?(red|blue|yellow|black|white) ?(red|blue|yellow|black|white) ?(red|blue|yellow|black|white)? ?(red|blue|yellow|black|white)? ?(red|blue|yellow|black|white)?/,
+                "callback": getSolution}
 }
 
 export function solveWires(x) {
@@ -20,14 +21,17 @@ export function solveWires(x) {
 
 }
 
-function getSolution(wires) {
+function getSolution(...wires) {
     Speaker.say(wires)
-    let wiresArray = wires.split(" ")
+
+    wires = wires.filter((wire) => {
+        return wire != null
+    })
 
     // get the wire index to cut, + 1, and convert to ordinal
-    Speaker.say("cut the " + getOrdinal(Wires.solve(wiresArray, bomb) + 1, wiresArray.length) + " wire")
+    Speaker.say("cut the " + getOrdinal(Wires.solve(wires, bomb) + 1, wires.length) + " wire")
 
-    annyang.removeCommands()
+    annyang.removeCommands("wires")
     main()
 }
 
