@@ -2,8 +2,14 @@ import annyang from "annyang";
 import Bomb from "ktane-solver/bomb"
 import Speaker from "../speaker/Speaker";
 import { solveButton } from "./ButtonHelper";
+import { solveComplicated } from "./ComplicatedHelper";
 import { solveMaze } from "./MazeHelper";
+import { solveMemory } from "./MemoryHelper";
+import { solvePassword } from "./PasswordHelper";
+import { solveSequence } from "./SequenceHelper";
+import { solveSimon } from "./SimonSaysHelper";
 import { solveKeypad } from "./SymbolsHelper";
+import { solveWhosOnFirst } from "./WhosOnFirstHelper";
 import { solveWires } from "./WiresHelper";
 
 let bomb;
@@ -11,7 +17,7 @@ let digit, vowel, car, frk, parallel, batteries
 
 const mainCommands = {
     "bomb check": getBomb,
-    "solve :module": {"regexp": /solve (wires|button|keypad|maze)/, "callback": chooseModule}
+    ":module": {"regexp": /(wires|button|keypad|maze|memory|simon says|who's on first|sequence|password|complicated)/, "callback": chooseModule}
 }
 
 const bombCheckCommands = {
@@ -41,12 +47,12 @@ function getBomb() {
 }
 
 function debug() {
-    digit = 0
+    digit = 2
     vowel = true
     car = false
     frk = false
-    parallel = false
-    batteries = 0
+    parallel = true
+    batteries = 1
 }
 
 function awaitBomb() {
@@ -107,6 +113,24 @@ function chooseModule(module) {
             break
         case "maze":
             solveMaze()
+            break
+        case "memory":
+            solveMemory(bomb)
+            break
+        case "simon says":
+            solveSimon(bomb)
+            break
+        case "who's on first":
+            solveWhosOnFirst()
+            break
+        case "sequence":
+            solveSequence(bomb)
+            break
+        case "password":
+            solvePassword()
+            break
+        case "complicated":
+            solveComplicated(bomb)
             break
     }
 }

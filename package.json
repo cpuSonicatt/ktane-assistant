@@ -10,7 +10,7 @@
     "artyom.js": "^1.0.6",
     "espeak": "0.0.3",
     "fuzzyset.js": "^1.0.6",
-    "ktane-solver": "^1.7.1",
+    "ktane-solver": "^1.11.0",
     "mespeak": "^2.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
