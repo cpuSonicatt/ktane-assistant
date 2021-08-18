@@ -3,12 +3,14 @@ import Bomb from "ktane-solver/bomb"
 import Speaker from "../speaker/Speaker";
 import { solveButton } from "./ButtonHelper";
 import { solveComplicated } from "./ComplicatedHelper";
+import { solveKeypad } from "./KeypadHelper";
+import { solveKnob } from "./KnobHelper";
 import { solveMaze } from "./MazeHelper";
 import { solveMemory } from "./MemoryHelper";
+import { solveMorse } from "./MorseHelper";
 import { solvePassword } from "./PasswordHelper";
 import { solveSequence } from "./SequenceHelper";
 import { solveSimon } from "./SimonSaysHelper";
-import { solveKeypad } from "./SymbolsHelper";
 import { solveWhosOnFirst } from "./WhosOnFirstHelper";
 import { solveWires } from "./WiresHelper";
 
@@ -17,7 +19,7 @@ let digit, vowel, car, frk, parallel, batteries
 
 const mainCommands = {
     "bomb check": getBomb,
-    ":module": {"regexp": /(wires|button|keypad|maze|memory|simon says|who's on first|sequence|password|complicated)/, "callback": chooseModule}
+    ":module": {"regexp": /(wires|button|keypad|maze|memory|simon says|who's on first|sequence|password|complicated|morse|knob)/, "callback": chooseModule}
 }
 
 const bombCheckCommands = {
@@ -34,7 +36,9 @@ export function main() {
     annyang.debug(true) // remove me
     annyang.addCommands(mainCommands)
     
-    annyang.start()
+    if (!annyang.isListening()) {
+        annyang.start()
+    }
 }
 
 function getBomb() {
@@ -96,11 +100,11 @@ function addPPort(bool) {
 
 function addBatteries(num) {
     batteries = num
-    Speaker.say(num + " batteries")
+
+    Speaker.say(num + " batter" + (num == 1 ? "y" : "ies")) // :^)
 }
 
 function chooseModule(module) {
-    annyang.abort()
     switch (module.toLowerCase()) {
         case "wires":
             solveWires(bomb)
@@ -131,6 +135,12 @@ function chooseModule(module) {
             break
         case "complicated":
             solveComplicated(bomb)
+            break
+        case "morse":
+            solveMorse()
+            break
+        case "knob":
+            solveKnob()
             break
     }
 }

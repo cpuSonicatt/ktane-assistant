@@ -19,7 +19,9 @@ export function solveButton(x) {
     annyang.removeCommands()
     annyang.addCommands(buttonColourTextCommand)
     annyang.debug(true) // remove me
-    annyang.start()
+    if (!annyang.isListening()) {
+        annyang.start()
+    }
 }
 
 function getSolution1(colour, text) {

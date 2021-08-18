@@ -20,8 +20,9 @@ export function solveMaze() {
     annyang.removeCommands()
     annyang.addCommands(mazeCommands)
     annyang.debug(true) // remove me
-    annyang.start()
-}
+    if (!annyang.isListening()) {
+        annyang.start()
+    }}
 
 function awaitMaze() {
     if (indicator == null || square == null || triangle == null) {

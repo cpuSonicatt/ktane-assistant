@@ -17,8 +17,9 @@ export function solveWires(x) {
     annyang.removeCommands()
     annyang.addCommands(wireCommands)
     annyang.debug(true) // remove me
-    annyang.start()
-
+    if (!annyang.isListening()) {
+        annyang.start()
+    }
 }
 
 function getSolution(...wires) {

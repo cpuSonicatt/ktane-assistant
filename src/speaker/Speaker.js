@@ -1,5 +1,4 @@
 let speaker = window.speechSynthesis
-speaker.rate = 0.7
 
 export default class Speaker {
 
